@@ -1,0 +1,60 @@
+{
+    "title": "Simulado AWS Associate Solutions Architect - Prova 1",
+    "questions": [
+      {
+        "question": "What is the AWS Well-Architected Framework?",
+        "options": [
+          "A certification program for AWS architects",
+          "A set of architectural best practices for building and operating reliable, secure, efficient, and cost-effective systems in the AWS Cloud",
+          "An AWS service that automatically designs and deploys architectures for your applications",
+          "A machine learning service provided by AWS for predictive analysis"
+        ],
+        "correctIndex": 1,
+        "isMultipleChoice": false
+      },
+      {
+        "question": "Which AWS service would you use to distribute incoming application traffic across multiple EC2 instances?",
+        "options": [
+          "Amazon Route 53",
+          "Amazon S3",
+          "Amazon VPC",
+          "Amazon RDS"
+        ],
+        "correctIndex": 0,
+        "isMultipleChoice": false
+      },
+      {
+        "question": "What is the AWS Identity and Access Management (IAM) service?",
+        "options": [
+          "A service for monitoring and analyzing AWS resource utilization",
+          "A service for creating and managing AWS virtual private networks",
+          "A service that provides secure and controlled access to AWS resources",
+          "A service for managing and scaling containerized applications"
+        ],
+        "correctIndex": 2,
+        "isMultipleChoice": false
+      },
+      {
+        "question": "What does Amazon RDS stand for?",
+        "options": [
+          "Amazon Relational Database Service",
+          "Amazon Routing and Data Storage",
+          "Amazon Remote Data Sync",
+          "Amazon Redshift"
+        ],
+        "correctIndex": 0,
+        "isMultipleChoice": false
+      },
+      {
+        "question": "Which AWS service provides a fully managed Kubernetes service?",
+        "options": [
+          "AWS EKS",
+          "AWS ECS",
+          "AWS ECR",
+          "AWS EMR"
+        ],
+        "correctIndex": 0,
+        "isMultipleChoice": false
+      }
+    ]
+  }
