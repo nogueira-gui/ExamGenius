@@ -1,5 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
-import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
+import { StyleSheet, SafeAreaView } from 'react-native';
+import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 import Exam from './src/pages/Exam';
 import { useState, useEffect } from 'react';
 import { getSimulado } from './src/api/AwsGateway';
@@ -8,7 +9,6 @@ import BannerAd from './src/components/bannerAd';
 
 export default function App() {
   const [questions, setQuestions] = useState([]);
-
   useEffect(() => {
     async function fetchQuestions() {
       try {
@@ -35,6 +35,16 @@ export default function App() {
     </SafeAreaView>
   );
 }
+
+_activate = async () => {
+  await activateKeepAwakeAsync();
+  alert('Activated!');
+};
+
+_deactivate = () => {
+  deactivateKeepAwake();
+  alert('Deactivated!');
+};
 
 const styles = StyleSheet.create({
   container: {
