@@ -12,16 +12,17 @@ interface Question {
 
 interface ExamProps {
   questions: Question[];
+  time: number;
 }
 
-const Exam: React.FC<ExamProps> = ({ questions }) => {
+const Exam: React.FC<ExamProps> = ({ questions, time }) => {
+  const timeRemaining = time; // Tempo de prova em segundos
   const [questionIndex, setQuestionIndex] = useState(0);
   const [reviewedQuestions, setReviewedQuestions] = useState<number[]>([]);
-  const [timeRemaining, setTimeRemaining] = useState(60 * 60 + 60 * 60 + 60 * 10); // Tempo de prova em segundos
   const [selectedOptions, setSelectedOptions] = useState<{ [key: number]: number[] }>({});
   const [examFinished, setExamFinished] = useState(false);
   const [score, setScore] = useState<number | null>(null);
-
+  
   const currentQuestion = questions[questionIndex];
 
   useEffect(() => {
@@ -29,7 +30,7 @@ const Exam: React.FC<ExamProps> = ({ questions }) => {
     if (questionIndex >= questions.length) {
       handleExamEnd();
     }
-  }, [questionIndex]);
+  }, [questionIndex, time]);
 
   const handleExamEnd = () => {
     // Verifica as respostas selecionadas com as respostas corretas
@@ -128,11 +129,13 @@ const Exam: React.FC<ExamProps> = ({ questions }) => {
           style={[styles.optionButton, isSelected && styles.optionButtonSelected]}
           onPress={() => handleOptionPress(index)}
         >
-          <CheckBoxElement checkboxStyle={styles.checkbox} value={isSelected}
-            checkedIcon='dot-circle-o'
-            uncheckedIcon='circle-o'
-            checkedColor="#4ca6ff" // Definir a cor do checkbox selecionado
-            uncheckedColor="#ccc"
+          <CheckBoxElement 
+            styles={styles.checkbox} 
+            isSelected={isSelected} 
+            checkedIcon={'dot-circle-o'}
+            uncheckedIcon={'circle-o'} 
+            color={isSelected ? '#4ca6ff' : '#ccc'}
+            size={24} 
           />
           <Text style={[styles.optionText, isSelected && styles.optionTextSelected]}>{option}</Text>
         </TouchableOpacity>
@@ -144,9 +147,9 @@ const Exam: React.FC<ExamProps> = ({ questions }) => {
     <SafeAreaView style={styles.container}>
       {examFinished ? (
         <View style={styles.examFinishedContainer}>
-          <Text style={styles.examFinishedText}>{(score && score > 80) ? '😎' : '🙁'}</Text>
+          <Text style={styles.examFinishedText}>{(score && score > 70) ? '😎' : '🙁'}</Text>
           <Text style={styles.examFinishedText}>Exam Finished!</Text>
-          {score && score > 80 ? (
+          {score && score > 70 ? (
             <Text style={styles.passedText}>Congratulations! You passed the exam with a score of {score.toFixed(2)}%</Text>
           ) : (
             <Text style={styles.failedText}>Unfortunately, you did not pass the exam. Your score is {score ? score.toFixed(2) : 0}%</Text>
@@ -154,7 +157,7 @@ const Exam: React.FC<ExamProps> = ({ questions }) => {
         </View>
       ) : (
         <View style={styles.main}>
-          <Timer totalTimeInSeconds={timeRemaining} />
+          <Timer totalTimeInSeconds={timeRemaining} handleExamEnd={handleExamEnd} />
 
           <Text style={styles.questionIndex}>Question {questionIndex + 1} of {questions.length}</Text>
 
@@ -174,12 +177,12 @@ const Exam: React.FC<ExamProps> = ({ questions }) => {
               onPress={toggleReview}
             >
               <CheckBoxElement
-                checkboxStyle={styles.checkbox}
-                value={reviewedQuestions.includes(questionIndex)}
-                checkedIcon='dot-circle-o'
-                uncheckedIcon='circle-o'
-                checkedColor="#121212" // Definir a cor do checkbox selecionado
-                uncheckedColor="#ccc"
+                styles={styles.checkbox} 
+                isSelected={reviewedQuestions.includes(questionIndex)} 
+                checkedIcon={'dot-circle-o'}
+                uncheckedIcon={'circle-o'} 
+                color={reviewedQuestions.includes(questionIndex) ? '#121212' : '#ccc'}
+                size={24} 
               />
               <Text style={[styles.reviewText, reviewedQuestions.includes(questionIndex) && styles.reviewTextSelected]}>
                 Revisar

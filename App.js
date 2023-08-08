@@ -1,19 +1,22 @@
 import { StatusBar } from 'expo-status-bar';
-import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
+import { StyleSheet, SafeAreaView } from 'react-native';
 import Exam from './src/pages/Exam';
 import { useState, useEffect } from 'react';
-import { getSimulado } from './src/api/AwsGateway';
+import { getExam } from './src/api/exam';
 import { SkeletonExam } from './src/components/skeletonExam';
 import BannerAd from './src/components/bannerAd';
 
 export default function App() {
   const [questions, setQuestions] = useState([]);
-
+  const [time, setTime] = useState(3600);
   useEffect(() => {
     async function fetchQuestions() {
       try {
-        const data = await getSimulado();
-        setQuestions(data.questions); // Atualiza o estado com as questões obtidas
+        const exam = "practioner"
+        const data = await getExam(exam);
+        data.time && setTime(data.time);
+        data.questions && setQuestions(data.questions); // Atualiza o estado com as questões obtidas
+        
       } catch (error) {
         console.error('Erro ao buscar dados do simulado:', error);
       }
@@ -29,7 +32,7 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Exam questions={questions}/>
+      <Exam questions={questions} time={time}/>
       <BannerAd/>
       <StatusBar style="auto" />
     </SafeAreaView>
