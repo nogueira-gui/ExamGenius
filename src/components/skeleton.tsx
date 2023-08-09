@@ -58,7 +58,7 @@ const QuestionIndexSkeleton = () => {
 
 const QuestionSkeleton = () => {
     // Gerar um array com 4 elementos e preenchê-lo com valores booleanos aleatórios (true ou false)
-    const randomLines = Array.from({ length: 3 }, () => Math.random() >= 0.5);
+    const randomLines = Array.from({ length: 2 }, () => Math.random() >= 0.5);
     const shouldOscillate = true;
 
     return (

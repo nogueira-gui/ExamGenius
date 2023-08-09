@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
 import Timer from '../components/timer';
 import CheckBoxElement from '../components/checkbox';
+import Donut from '../components/donut';
 
 interface Question {
   question: string;
@@ -150,9 +151,15 @@ const Exam: React.FC<ExamProps> = ({ questions, time }) => {
           <Text style={styles.examFinishedText}>{(score && score > 70) ? '😎' : '🙁'}</Text>
           <Text style={styles.examFinishedText}>Exam Finished!</Text>
           {score && score > 70 ? (
-            <Text style={styles.passedText}>Congratulations! You passed the exam with a score of {score.toFixed(2)}%</Text>
+            <>
+              <Text style={styles.passedText}>Congratulations! You passed the exam with a score of</Text>
+              <Donut percentage={score}	/>
+            </>
           ) : (
-            <Text style={styles.failedText}>Unfortunately, you did not pass the exam. Your score is {score ? score.toFixed(2) : 0}%</Text>
+            <>
+              <Text style={styles.failedText}>Unfortunately, you did not pass the exam. Your score is</Text>
+              <Donut percentage={score} />
+            </>
           )}
         </View>
       ) : (

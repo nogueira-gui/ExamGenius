@@ -1,7 +1,6 @@
 import axios from 'axios';
-import Constants from 'expo-constants';
 
-const apiBaseUrl = Constants.manifest.extra.API_GATEWAY;
+const apiBaseUrl = process.env.EXPO_PUBLIC_API_GATEWAY;
 
 const api = axios.create({
   baseURL: apiBaseUrl
