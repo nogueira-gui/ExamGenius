@@ -1,14 +1,15 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, TextInput, StyleSheet } from "react-native";
 import Svg, { G, Circle } from 'react-native-svg';
 import Animated, {
-  useSharedValue,
-  useAnimatedProps,
-  withTiming,
-  Easing,
+    useSharedValue,
+    useAnimatedProps,
+    withTiming,
+    Easing,
 } from 'react-native-reanimated';
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
+const AnimatedInput = Animated.createAnimatedComponent(TextInput);
 
 const Donut = ({
     percentage = 75,
@@ -23,6 +24,7 @@ const Donut = ({
 ) => {
     const animatedValue = useSharedValue(0);
     const circleRef = React.useRef();
+    const inputRef = React.useRef();
     const halfCircleSize = radius + strokeWidth;
     const circleCircumference = 2 * Math.PI * radius;
 
@@ -74,6 +76,23 @@ const Donut = ({
                     />
                 </G>
             </Svg>
+            <AnimatedInput
+                ref={inputRef}
+                underlineColorAndroid={'transparent'}
+                editable={false}
+                defaultValue="0"
+                style={[StyleSheet.absoluteFillObject,
+                {
+                    fontSize: radius / 2,
+                    fontWeight: 'bold',
+                    color: textColor,
+                    textAlign: 'center',
+                    paddingVertical: radius / 4
+
+                }
+                ]}
+                value={Math.round(animatedValue.value).toString()+"%"}
+            />
         </View>
     );
 }
