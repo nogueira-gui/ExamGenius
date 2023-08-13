@@ -23,6 +23,7 @@ const Exam: React.FC<ExamProps> = ({ questions, time }) => {
   const [selectedOptions, setSelectedOptions] = useState<{ [key: number]: number[] }>({});
   const [examFinished, setExamFinished] = useState(false);
   const [score, setScore] = useState<number | null>(null);
+  const minScore = 70;
   
   const currentQuestion = questions[questionIndex];
 
@@ -41,8 +42,6 @@ const Exam: React.FC<ExamProps> = ({ questions, time }) => {
     // Marca o exame como finalizado
     setExamFinished(true);
   };
-
-  // Restante do código permanece igual...
 
   const calculateScore = () => {
     let correctAnswers = 0;
@@ -81,9 +80,6 @@ const Exam: React.FC<ExamProps> = ({ questions, time }) => {
   };
 
   const handleConfirm = () => {
-    // Aqui você pode adicionar a lógica para verificar se a resposta está correta
-    // e fazer o que for necessário, como calcular pontuação, etc.
-    // Por simplicidade, neste exemplo, apenas passamos para a próxima pergunta.
     handleNextQuestion();
   };
 
@@ -148,9 +144,9 @@ const Exam: React.FC<ExamProps> = ({ questions, time }) => {
     <SafeAreaView style={styles.container}>
       {examFinished ? (
         <View style={styles.examFinishedContainer}>
-          <Text style={styles.examFinishedText}>{(score && score > 70) ? '😎' : '🙁'}</Text>
+          <Text style={styles.examFinishedText}>{(score && score >= minScore) ? '😎' : '🙁'}</Text>
           <Text style={styles.examFinishedText}>Exam Finished!</Text>
-          {score && score > 70 ? (
+          {score && score >= minScore ? (
             <>
               <Text style={styles.passedText}>Congratulations! You passed the exam with a score of</Text>
               <Donut percentage={score}	/>
