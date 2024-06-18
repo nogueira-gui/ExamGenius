@@ -7,16 +7,23 @@ import Donut from '../components/donut';
 interface Question {
   question: string;
   options: string[];
-  correctIndex: number;
-  isMultipleChoice: boolean;
+  correct_index: number;
+  is_multiple_choice?: boolean;
 }
 
+interface Review {
+  selectedOptions: { [key: number]: number[] };
+  reviewedQuestions: number[];
+  timeRemaining: number;
+  score: number | null;
+}
 interface ExamProps {
   questions: Question[];
   time: number;
+  handleReview: (props) => Review;
 }
 
-const Exam: React.FC<ExamProps> = ({ questions, time }) => {
+const Exam: React.FC<ExamProps> = ({ questions, time, handleReview }) => {
   const timeRemaining = time; // Tempo de prova em segundos
   const [questionIndex, setQuestionIndex] = useState(0);
   const [reviewedQuestions, setReviewedQuestions] = useState<number[]>([]);
@@ -47,20 +54,30 @@ const Exam: React.FC<ExamProps> = ({ questions, time }) => {
     let correctAnswers = 0;
     questions.forEach((question, index) => {
       const selectedOptionsForQuestion = selectedOptions[index] || [];
-      if (question.isMultipleChoice) {
-        const isCorrect = selectedOptionsForQuestion.length === question.correctIndex.length &&
-          selectedOptionsForQuestion.every(option => question.correctIndex.includes(option));
+      if (question.is_multiple_choice) {
+        const isCorrect = selectedOptionsForQuestion.length === question.correct_index.length &&
+          selectedOptionsForQuestion.every(option => question.correct_index.includes(option));
         if (isCorrect) {
           correctAnswers++;
         }
       } else {
-        if (selectedOptionsForQuestion.length === 1 && selectedOptionsForQuestion[0] === question.correctIndex) {
+        if (selectedOptionsForQuestion.length === 1 && selectedOptionsForQuestion[0] === question.correct_index) {
           correctAnswers++;
         }
       }
     });
     return (correctAnswers / questions.length) * 100;
   };
+
+  const handleExamReview = () => {
+    const review: Review = {
+      selectedOptions,
+      reviewedQuestions,
+      timeRemaining,
+      score,
+    };
+    handleReview(review);
+  }
 
   const handlePreviousQuestion = () => {
     const previousQuestionIndex = questionIndex - 1;
@@ -93,7 +110,7 @@ const Exam: React.FC<ExamProps> = ({ questions, time }) => {
   };
 
   const handleOptionPress = (optionIndex: number) => {
-    if (currentQuestion.isMultipleChoice) {
+    if (currentQuestion.is_multiple_choice) {
       setSelectedOptions({
         ...selectedOptions,
         [questionIndex]: toggleOptionSelection(selectedOptions[questionIndex] || [], optionIndex),
@@ -145,16 +162,25 @@ const Exam: React.FC<ExamProps> = ({ questions, time }) => {
       {examFinished ? (
         <View style={styles.examFinishedContainer}>
           <Text style={styles.examFinishedText}>{(score && score >= minScore) ? '😎' : '🙁'}</Text>
-          <Text style={styles.examFinishedText}>Exam Finished!</Text>
+          {/* <Text style={styles.examFinishedText}>Exam Finished!</Text> */}
+          <Text style={styles.examFinishedText}>Exame Finalizado!</Text>
           {score && score >= minScore ? (
             <>
-              <Text style={styles.passedText}>Congratulations! You passed the exam with a score of</Text>
+              {/* <Text style={styles.passedText}>Congratulations! You passed the exam with a score of</Text> */}
+              <Text style={styles.passedText}>Parabéns! Você conquistou a pontuação:</Text>
               <Donut percentage={score}	/>
+              <TouchableOpacity onPress={handleExamReview} style={[{marginTop:20},styles.button, styles.buttonReviewed]}>
+                <Text style={styles.buttonText}>Revisar</Text>
+              </TouchableOpacity>
             </>
           ) : (
             <>
-              <Text style={styles.failedText}>Unfortunately, you did not pass the exam. Your score is</Text>
+              {/* <Text style={styles.failedText}>Unfortunately, you did not pass the exam. Your score is</Text> */}
+              <Text style={styles.failedText}>Pontuação menor que 70%, continue tentando!</Text>
               <Donut percentage={score} />
+              <TouchableOpacity onPress={handleExamReview} style={[{marginTop:20},styles.button, styles.buttonReviewed]}>
+                <Text style={styles.buttonText}>Revisar</Text>
+              </TouchableOpacity>
             </>
           )}
         </View>
@@ -303,11 +329,13 @@ const styles = StyleSheet.create({
     color: '#50c356',
     fontSize: 18,
     textAlign: 'center',
+    marginBottom: 20,
   },
   failedText: {
     color: '#ff0000',
     fontSize: 18,
     textAlign: 'center',
+    marginBottom: 20,
   },
 });
 

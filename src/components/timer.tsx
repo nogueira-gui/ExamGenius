@@ -32,7 +32,8 @@ const Timer = ({ totalTimeInSeconds, handleExamEnd }:TimerProps) => {
     };
   }, [secondsRemaining, handleExamEnd]);
 
-  return <Text style={styles.timeRemaining}>Time remaining:{formatTime(secondsRemaining)}</Text>;
+  // return <Text style={styles.timeRemaining}>Time remaining:{formatTime(secondsRemaining)}</Text>;
+  return <Text style={styles.timeRemaining}>Tempo restante:{formatTime(secondsRemaining)}</Text>;
 };
 const styles = StyleSheet.create({ 
   timeRemaining: {

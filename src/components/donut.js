@@ -97,9 +97,4 @@ const Donut = ({
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-
-});
-
 export default Donut;
