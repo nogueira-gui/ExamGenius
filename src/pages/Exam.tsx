@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Timer from '../components/timer';
 import CheckBoxElement from '../components/checkbox';
 import Donut from '../components/donut';
@@ -46,6 +47,7 @@ const Exam: React.FC<ExamProps> = ({ questions, time, handleReview }) => {
     const calculatedScore = calculateScore();
     setScore(calculatedScore);
 
+    AsyncStorage.removeItem('current_exam');
     // Marca o exame como finalizado
     setExamFinished(true);
   };

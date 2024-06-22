@@ -20,7 +20,15 @@ interface Review {
 
 const ReviewScreen = ({ route }) => {
     const questions: Question[] = route.params.questions;
-    const review: Review = route.params.review;
+    let review: Review = route.params.review;
+
+    for (let i = 0; i < questions.length; i++) {
+        if (!review.selectedOptions[i]) {
+            review.selectedOptions[i] = [];
+        }
+    }
+
+    // console.log(review);
     const verifyIsSelected = (optionIndex: number, questionIndex: number) => {
         return review.selectedOptions[questionIndex] && review.selectedOptions[questionIndex].includes(optionIndex);
     }

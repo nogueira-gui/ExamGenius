@@ -36,7 +36,7 @@ export async function getExamApi(exam: string) {
       question: q.current_question,
       options: q.answers,
       correct_index: q.correct_answer_index,
-      is_multiple_choice: q.answers.length > 2,
+      is_multiple_choice: false
     }));
 
   } catch (error) {
